@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/row_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_badge"
+        android:padding="@dimen/list_item_padding"
+        android:layout_marginStart="@dimen/list_item_margin_horizontal"
+        android:layout_marginEnd="@dimen/list_item_margin_horizontal"
+        android:layout_marginTop="@dimen/list_item_margin_vertical"
+        android:layout_marginBottom="@dimen/list_item_margin_vertical"
+        android:elevation="@dimen/list_item_elevation"
+        android:clipToPadding="false">
+    
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageView_picture"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintWidth_percent="0.2"
+        android:src="@color/colorPrimary"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/textView_ticker"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+            android:id="@+id/textView_ticker"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="@dimen/list_item_text_size_big"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toEndOf="@id/imageView_picture"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/imageView_picture"/>
+
+    <TextView
+            android:id="@+id/textView_nothing"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="viewEnd"
+            android:textSize="@dimen/list_item_text_size_main"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="@dimen/list_item_internal_spacing"
+            app:layout_constraintStart_toEndOf="@id/imageView_picture"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView_ticker"/>
+
+    <TextView
+        android:id="@+id/textView_grossProfitChange"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/list_item_text_size_main"
+        android:layout_marginTop="@dimen/list_item_internal_spacing"
+        android:text="@string/gross_profit_change_with_previous"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_nothing"/>
+
+    <TextView
+        android:id="@+id/textView_netIncomeChange"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/list_item_text_size_main"
+        android:layout_marginTop="@dimen/list_item_internal_spacing"
+        android:text="@string/net_income_change_with_previous"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_grossProfitChange"/>
+
+    <TextView
+        android:id="@+id/textView_grossProfitPerSpentDollar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/list_item_text_size_main"
+        android:layout_marginTop="@dimen/list_item_internal_spacing"
+        android:text="@string/gross_profit_in_recent_quarter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_netIncomeChange"/>
+
+    <TextView
+        android:id="@+id/textView_netIncomePerSpentDollar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/list_item_text_size_main"
+        android:layout_marginTop="@dimen/list_item_internal_spacing"
+        android:text="@string/net_income_in_recent_quarter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_grossProfitPerSpentDollar"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

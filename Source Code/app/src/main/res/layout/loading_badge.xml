@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/loading_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@drawable/background_badge"
+        android:elevation="@dimen/loading_badge_elevation"
+        android:focusable="true"
+        android:clickable="true">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="@dimen/loading_badge_text_size_big"
+            android:textAlignment="center"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/loading_badge_internal_spacing"
+            android:text="@string/loading"
+            android:textSize="@dimen/loading_badge_text_size_medium"
+            android:textAlignment="center"/>
+
+    <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/loading_badge_progressbar_margin"/>
+
+    <Button
+            android:id="@+id/tryagain_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/loading_badge_progressbar_margin"
+            android:text="@string/try_again"
+            android:background="@drawable/background_badge"
+            android:elevation="@dimen/loading_badge_button_elevation"
+            android:visibility="invisible"/>
+
+</LinearLayout>

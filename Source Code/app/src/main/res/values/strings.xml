@@ -1,0 +1,17 @@
+<resources>
+
+    <string name="app_name">Stock App</string>
+
+    <string name="loading">Loading…</string>
+    <string name="network_problem_check_internet_connection">Network problem. Check Internet connection please.</string>
+    <string name="try_again">Try again</string>
+    <string name="refresh">Refresh</string>
+    <string name="change_order">Change order</string>
+    <string name="close">Close</string>
+
+    <string name="gross_profit_change_with_previous">Gross Profit change with previous quarter:</string>
+    <string name="net_income_change_with_previous">Net Income change with previous quarter:</string>
+    <string name="gross_profit_in_recent_quarter">Gross Profit in recent quarter per 1 dollar spent on them today (in cents):</string>
+    <string name="net_income_in_recent_quarter">Net Income in recent quarter per 1 dollar spent on them today (in cents):</string>
+
+</resources>
