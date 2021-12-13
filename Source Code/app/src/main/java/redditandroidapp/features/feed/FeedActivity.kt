@@ -104,6 +104,8 @@ class FeedActivity : AppCompatActivity() {
     private fun loadDefaultCompaniesSet() {
         val defaultCompanies = arrayListOf<String>()
 
+        defaultCompanies.add("BP")
+        defaultCompanies.add("FB")
         defaultCompanies.add("GOOGL")
         defaultCompanies.add("HMC")
         defaultCompanies.add("NIO")
