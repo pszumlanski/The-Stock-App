@@ -6,8 +6,11 @@ import com.google.gson.annotations.SerializedName
 data class QuarterIncomeStatementGsonModel(
 
     @SerializedName("grossProfit")
-    val grossProfit: Double?,
+    val grossProfit: Double,
 
     @SerializedName("netIncome")
-    val netIncome: Double?
+    val netIncome: Double,
+
+    @SerializedName("reportedCurrency")
+    val reportedCurrency: String
 )

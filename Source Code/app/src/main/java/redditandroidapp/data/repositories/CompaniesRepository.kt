@@ -63,35 +63,55 @@ class CompaniesRepository @Inject constructor(private val networkInteractor: Com
                                     if (incomeStatementResponse.size == 2) {
                                         Log.d("DATA FETCHING", "Data fetched successfully")
 
-                                        val previousQuarter_GrossProfit = incomeStatementResponse[1].grossProfit
-                                        val previousQuarter_NetIncome = incomeStatementResponse[1].netIncome
-                                        val recentQuarter_GrossProfit = incomeStatementResponse[0].grossProfit
-                                        val recentQuarter_NetIncome = incomeStatementResponse[0].netIncome
+                                        ///
+                                        // Todo: It's temporary solution for next few days.
+                                        // We need to implement fetching currency ratio from the API!
+                                        val currency = incomeStatementResponse[0].reportedCurrency
+                                        val multiplier = when (currency) {
+                                            "USD" -> 1.0
+                                            "JPY" -> 0.0088
+                                            "CNY" -> 0.16
+                                            "EUR" -> 1.13
+                                            "GBP" -> 1.32
+                                            else -> null
+                                        }
+                                        ///
 
-                                        val today_OutstandingShares = floatSharesResponse[0].outstandingShares
-                                        val today_SharePrice = sharePriceResponse[0].sharePrice
+                                        if (multiplier == null) {
+                                            Log.d("CURRENCY CONTROL", "unknown currency: " + currency)
+                                        } else {
+                                            val previousQuarter_GrossProfit = incomeStatementResponse[1].grossProfit * multiplier
+                                            val previousQuarter_NetIncome = incomeStatementResponse[1].netIncome * multiplier
+                                            val recentQuarter_GrossProfit = incomeStatementResponse[0].grossProfit * multiplier
+                                            val recentQuarter_NetIncome = incomeStatementResponse[0].netIncome * multiplier
 
-                                        Log.d("DATA CONTROL", "ticker: " + formattedTicker)
-                                        Log.d("DATA CONTROL", "previousQuarter_GrossProfit: " + previousQuarter_GrossProfit.toString())
-                                        Log.d("DATA CONTROL", "previousQuarter_NetIncome: " + previousQuarter_NetIncome.toString())
-                                        Log.d("DATA CONTROL", "recentQuarter_GrossProfit: " + recentQuarter_GrossProfit.toString())
-                                        Log.d("DATA CONTROL", "recentQuarter_NetIncome: " + recentQuarter_NetIncome.toString())
-                                        Log.d("DATA CONTROL", "today_OutstandingShares: " + today_OutstandingShares.toString())
-                                        Log.d("DATA CONTROL", "today_SharePrice: " + today_SharePrice.toString())
 
-                                        val newCompany = CompanyDatabaseEntity(
-                                                ticker = ticker,
+                                            val today_OutstandingShares = floatSharesResponse[0].outstandingShares
+                                            val today_SharePrice = sharePriceResponse[0].sharePrice
 
-                                                previousQuarter_GrossProfit = previousQuarter_GrossProfit,
-                                                previousQuarter_NetIncome = previousQuarter_NetIncome,
+                                            Log.d("DATA CONTROL", "ticker: " + formattedTicker)
+                                            Log.d("DATA CONTROL", "previousQuarter_GrossProfit: " + previousQuarter_GrossProfit.toString())
+                                            Log.d("DATA CONTROL", "previousQuarter_NetIncome: " + previousQuarter_NetIncome.toString())
+                                            Log.d("DATA CONTROL", "recentQuarter_GrossProfit: " + recentQuarter_GrossProfit.toString())
+                                            Log.d("DATA CONTROL", "recentQuarter_NetIncome: " + recentQuarter_NetIncome.toString())
+                                            Log.d("DATA CONTROL", "today_OutstandingShares: " + today_OutstandingShares.toString())
+                                            Log.d("DATA CONTROL", "today_SharePrice: " + today_SharePrice.toString())
 
-                                                recentQuarter_GrossProfit = recentQuarter_GrossProfit,
-                                                recentQuarter_NetIncome = recentQuarter_NetIncome,
+                                            val newCompany = CompanyDatabaseEntity(
+                                                    ticker = ticker,
 
-                                                today_OutstandingShares = today_OutstandingShares,
-                                                today_SharePrice = today_SharePrice
-                                        )
-                                        databaseInteractor.addNewCompany(newCompany)
+                                                    previousQuarter_GrossProfit = previousQuarter_GrossProfit,
+                                                    previousQuarter_NetIncome = previousQuarter_NetIncome,
+
+                                                    recentQuarter_GrossProfit = recentQuarter_GrossProfit,
+                                                    recentQuarter_NetIncome = recentQuarter_NetIncome,
+
+                                                    today_OutstandingShares = today_OutstandingShares,
+                                                    today_SharePrice = today_SharePrice
+                                            )
+                                            databaseInteractor.addNewCompany(newCompany)
+                                        }
+
                                     } else {
                                         // todo
                                     }
