@@ -104,6 +104,9 @@ class CompaniesRepository @Inject constructor(private val networkInteractor: Com
                             override fun onFailure(call: Call<List<SharePriceGsonModel>>?, t: Throwable?) {
                                 setUpdateError(t)
                                 Log.e("DATA FETCHING", "Data fetching error - call 3")
+                                t?.message?.let {
+                                    Log.e("DATA FETCHING", ("Data fetching error - call 3 error: " + it))
+                                }
                             }
                         })
 
@@ -113,6 +116,9 @@ class CompaniesRepository @Inject constructor(private val networkInteractor: Com
                     override fun onFailure(call: Call<List<SharesFloatGsonModel>>?, t: Throwable?) {
                         setUpdateError(t)
                         Log.e("DATA FETCHING", "Data fetching error - call 2")
+                        t?.message?.let {
+                            Log.e("DATA FETCHING", ("Data fetching error - call 2 error: " + it))
+                        }
                     }
                 })
 
@@ -122,6 +128,9 @@ class CompaniesRepository @Inject constructor(private val networkInteractor: Com
             override fun onFailure(call: Call<List<QuarterIncomeStatementGsonModel>>?, t: Throwable?) {
                 setUpdateError(t)
                 Log.e("DATA FETCHING", "Data fetching error - call 1")
+                t?.message?.let {
+                    Log.e("DATA FETCHING", ("Data fetching error - call 1 error: " + it))
+                }
             }
         })
     }

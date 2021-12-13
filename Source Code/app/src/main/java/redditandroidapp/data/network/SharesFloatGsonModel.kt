@@ -6,5 +6,5 @@ import com.google.gson.annotations.SerializedName
 data class SharesFloatGsonModel(
 
     @SerializedName("outstandingShares")
-    val outstandingShares: Int?
+    val outstandingShares: Long?
 )

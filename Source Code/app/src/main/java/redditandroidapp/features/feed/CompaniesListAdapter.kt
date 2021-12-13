@@ -20,7 +20,7 @@ class CompaniesListAdapter(val context: Context) : RecyclerView.Adapter<ViewHold
 
     fun setItems(newCompaniesList: List<CompanyDatabaseEntity>) {
         this.companiesList = newCompaniesList.sortedByDescending {
-            it.getNetIncometInRecentQuarterInCentPer1DollarSpentOnThemToday()
+            it.getNetIncomeInRecentQuarterInCentPer1DollarSpentOnThemToday()
         }
         notifyDataSetChanged()
     }
@@ -77,7 +77,7 @@ class CompaniesListAdapter(val context: Context) : RecyclerView.Adapter<ViewHold
                     String.format("%.3f", it))
         }
 
-        company.getNetIncometInRecentQuarterInCentPer1DollarSpentOnThemToday()?.let {
+        company.getNetIncomeInRecentQuarterInCentPer1DollarSpentOnThemToday()?.let {
             holder.netIncomePer1DollarSpent.text = (context.getString(R.string.net_income_in_recent_quarter) + "     " +
                     String.format("%.3f", it))
         }

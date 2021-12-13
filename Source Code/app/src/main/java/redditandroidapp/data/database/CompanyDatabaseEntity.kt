@@ -14,7 +14,7 @@ data class CompanyDatabaseEntity(
         val recentQuarter_GrossProfit: Double?,
         val recentQuarter_NetIncome: Double?,
 
-        val today_OutstandingShares: Int?,
+        val today_OutstandingShares: Long?,
         val today_SharePrice: Double?
 ) {
 
@@ -23,7 +23,7 @@ data class CompanyDatabaseEntity(
         else {
             val result = (recentQuarter_GrossProfit - previousQuarter_GrossProfit)/previousQuarter_GrossProfit
             Log.d("CALCULATION CONTROL", ticker.toUpperCase() + ": "+ "getGrossProfitChangeWithPreviousQuarter: " + result)
-            return result
+            return result.toDouble()
         }
     }
 
@@ -32,7 +32,7 @@ data class CompanyDatabaseEntity(
         else {
             val result = (recentQuarter_NetIncome - previousQuarter_NetIncome)/previousQuarter_NetIncome
             Log.d("CALCULATION CONTROL", ticker.toUpperCase() + ": "+ "getNetIncomeChangeWithPreviousQuarter: " + result)
-            return result
+            return result.toDouble()
         }
     }
 
@@ -45,7 +45,7 @@ data class CompanyDatabaseEntity(
         }
     }
 
-    fun getNetIncometInRecentQuarterInCentPer1DollarSpentOnThemToday(): Double? {
+    fun getNetIncomeInRecentQuarterInCentPer1DollarSpentOnThemToday(): Double? {
         if (recentQuarter_NetIncome == null || today_OutstandingShares == null || today_SharePrice == null) return null
         else {
             val result = (recentQuarter_NetIncome/today_OutstandingShares/today_SharePrice * 100)
