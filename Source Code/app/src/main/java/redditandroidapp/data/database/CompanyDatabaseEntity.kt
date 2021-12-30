@@ -13,6 +13,7 @@ data class CompanyDatabaseEntity(
         val previousQuarter_NetIncome: Double?,
         val recentQuarter_GrossProfit: Double?,
         val recentQuarter_NetIncome: Double?,
+        val eps: Float?,
 
         val today_OutstandingShares: Long?,
         val today_SharePrice: Double?
@@ -54,5 +55,8 @@ data class CompanyDatabaseEntity(
         }
     }
 
+    fun getEarningsPerShare(): Float? {
+        return eps
+    }
 }
 

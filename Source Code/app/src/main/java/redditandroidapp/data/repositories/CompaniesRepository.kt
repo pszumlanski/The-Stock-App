@@ -84,6 +84,7 @@ class CompaniesRepository @Inject constructor(private val networkInteractor: Com
                                             val previousQuarter_NetIncome = incomeStatementResponse[1].netIncome * multiplier
                                             val recentQuarter_GrossProfit = incomeStatementResponse[0].grossProfit * multiplier
                                             val recentQuarter_NetIncome = incomeStatementResponse[0].netIncome * multiplier
+                                            val eps = incomeStatementResponse[0].eps
 
 
                                             val today_OutstandingShares = floatSharesResponse[0].outstandingShares
@@ -105,6 +106,8 @@ class CompaniesRepository @Inject constructor(private val networkInteractor: Com
 
                                                     recentQuarter_GrossProfit = recentQuarter_GrossProfit,
                                                     recentQuarter_NetIncome = recentQuarter_NetIncome,
+
+                                                    eps = eps,
 
                                                     today_OutstandingShares = today_OutstandingShares,
                                                     today_SharePrice = today_SharePrice

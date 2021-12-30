@@ -82,6 +82,10 @@ class CompaniesListAdapter(val context: Context) : RecyclerView.Adapter<ViewHold
                     String.format("%.3f", it))
         }
 
+        company.getEarningsPerShare()?.let {
+            holder.eps.text = (context.getString(R.string.eps) + "     " + String.format("%.2f", it))
+        }
+
 //        // Set onClickListener
 //        holder.rowContainer.setOnClickListener{
 //            val itemId = postsList[position].id
@@ -99,6 +103,8 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     val grossProfitPer1DollarSpent = view.textView_grossProfitPerSpentDollar
     val netIncomePer1DollarSpent = view.textView_netIncomePerSpentDollar
+
+    val eps = view.textView_eps
 
     val rowContainer = view.row_container
 }

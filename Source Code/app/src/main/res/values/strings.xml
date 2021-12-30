@@ -13,5 +13,6 @@
     <string name="net_income_change_with_previous">Net Income change with previous quarter:</string>
     <string name="gross_profit_in_recent_quarter">Gross Profit in recent quarter per 1 dollar spent on them today (in cents):</string>
     <string name="net_income_in_recent_quarter">Net Income in recent quarter per 1 dollar spent on them today (in cents):</string>
+    <string name="eps">Earnings per share:</string>
 
 </resources>
