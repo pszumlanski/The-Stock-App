@@ -1,5 +1,6 @@
 package redditandroidapp.features.feed
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -19,18 +20,20 @@ import kotlinx.android.synthetic.main.appbar.*
 import kotlinx.android.synthetic.main.loading_badge.*
 import redditandroidapp.R
 import redditandroidapp.data.database.CompanyDatabaseEntity
+import redditandroidapp.data.utils.DataFetchingCallback
 import redditandroidapp.injection.RedditAndroidApp
 import javax.inject.Inject
 
 
 // Main ('feed') view
-class FeedActivity : AppCompatActivity() {
+class FeedActivity : AppCompatActivity(), DataFetchingCallback {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: FeedViewModel
     private lateinit var companiesListAdapter: CompaniesListAdapter
     var isLoadingMoreItems: Boolean = false
+    val activity = this
 
     private val STATE_LOADING_ERROR = "STATE_LOADING_ERROR"
     private val STATE_CONTENT_LOADED = "STATE_CONTENT_LOADED"
@@ -62,7 +65,7 @@ class FeedActivity : AppCompatActivity() {
         // TODO CLEAN
         add_company_button.setOnClickListener {
             val ticker = add_company_input.text.toString()
-            viewModel.addCompany(ticker)
+            viewModel.addCompany(ticker, activity)
 
             // Hide the keyboard
             val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -120,7 +123,7 @@ class FeedActivity : AppCompatActivity() {
         defaultCompanies.add("XPEV")
 
         defaultCompanies.forEach {
-            viewModel.addCompany(it)
+            viewModel.addCompany(it, activity)
         }
     }
 
@@ -174,6 +177,19 @@ class FeedActivity : AppCompatActivity() {
         // Setup refresh button
         btn_refresh.setOnClickListener{
             refreshPostsSubscription()
+        }
+    }
+
+    override fun fetchingError() {
+
+        runOnUiThread {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle(R.string.dialogTitle)
+            builder.setMessage(R.string.dialogMessage)
+            builder.setIcon(R.drawable.ic_cross)
+            val alertDialog: AlertDialog = builder.create()
+            alertDialog.setCancelable(true)
+            alertDialog.show()
         }
     }
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import redditandroidapp.data.database.CompanyDatabaseEntity
 import redditandroidapp.data.repositories.CompaniesRepository
+import redditandroidapp.data.utils.DataFetchingCallback
 import javax.inject.Inject
 
 class FeedViewModel @Inject constructor(private val companiesRepository: CompaniesRepository)
@@ -14,8 +15,8 @@ class FeedViewModel @Inject constructor(private val companiesRepository: Compani
         return companiesRepository.getAllCompanies()
     }
 
-    fun addCompany(ticker: String) {
-        companiesRepository.addNewCompany(ticker)
+    fun addCompany(ticker: String, callback: DataFetchingCallback) {
+        companiesRepository.addNewCompany(ticker, callback)
     }
 
     fun removeCompany(ticker: String) {

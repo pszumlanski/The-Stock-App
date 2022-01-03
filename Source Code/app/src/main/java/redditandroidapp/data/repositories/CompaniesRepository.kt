@@ -9,6 +9,7 @@ import redditandroidapp.data.network.QuarterIncomeStatementGsonModel
 import redditandroidapp.data.network.SharePriceGsonModel
 import redditandroidapp.data.network.SharesFloatGsonModel
 import redditandroidapp.data.utils.CurrencyExchange
+import redditandroidapp.data.utils.DataFetchingCallback
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,7 +32,7 @@ class CompaniesRepository @Inject constructor(private val networkInteractor: Com
         networkInteractor.setUpdateError(t)
     }
 
-    fun addNewCompany(ticker: String) {
+    fun addNewCompany(ticker: String, callback: DataFetchingCallback) {
 
         val formattedTicker = ticker.toUpperCase()
 
@@ -97,14 +98,21 @@ class CompaniesRepository @Inject constructor(private val networkInteractor: Com
                                                 today_SharePrice = today_SharePrice
                                         )
                                         databaseInteractor.addNewCompany(newCompany)
+                                    } else {
+                                        callback.fetchingError()
+                                        setUpdateError(null)
+                                        Log.e("DATA FETCHING", "Data fetching error - data incomplete")
                                     }
+                                } else {
+                                    callback.fetchingError()
+                                    setUpdateError(null)
+                                    Log.e("DATA FETCHING", "Data fetching error - data incomplete")
                                 }
-                                ////
-
 
                             }
 
                             override fun onFailure(call: Call<List<SharePriceGsonModel>>?, t: Throwable?) {
+                                callback.fetchingError()
                                 setUpdateError(t)
                                 Log.e("DATA FETCHING", "Data fetching error - call 3")
                                 t?.message?.let {
@@ -117,6 +125,7 @@ class CompaniesRepository @Inject constructor(private val networkInteractor: Com
                     }
 
                     override fun onFailure(call: Call<List<SharesFloatGsonModel>>?, t: Throwable?) {
+                        callback.fetchingError()
                         setUpdateError(t)
                         Log.e("DATA FETCHING", "Data fetching error - call 2")
                         t?.message?.let {
@@ -129,6 +138,7 @@ class CompaniesRepository @Inject constructor(private val networkInteractor: Com
             }
 
             override fun onFailure(call: Call<List<QuarterIncomeStatementGsonModel>>?, t: Throwable?) {
+                callback.fetchingError()
                 setUpdateError(t)
                 Log.e("DATA FETCHING", "Data fetching error - call 1")
                 t?.message?.let {
