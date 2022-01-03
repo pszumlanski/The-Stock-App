@@ -15,5 +15,5 @@ data class QuarterIncomeStatementGsonModel(
     val reportedCurrency: String,
 
     @SerializedName("eps")
-    val eps: Float
+    val eps: Double
 )
