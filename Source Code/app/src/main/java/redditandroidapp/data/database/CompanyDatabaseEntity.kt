@@ -58,5 +58,10 @@ data class CompanyDatabaseEntity(
     fun getEarningsPerShare(): Double? {
         return eps
     }
+
+    fun getEarningsPerSharePer1DollarSpentOnThemToday(): Double? {
+        if (eps == null || today_SharePrice == null) return null
+        else return (eps/today_SharePrice)
+    }
 }
 
