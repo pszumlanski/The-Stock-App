@@ -62,7 +62,7 @@ class CompaniesRepository @Inject constructor(private val networkInteractor: Com
 
                                 ////
                                 if (incomeStatementResponse != null && floatSharesResponse != null && sharePriceResponse != null) {
-                                    if (incomeStatementResponse.size == 2) {
+                                    if (incomeStatementResponse.size == 2 && floatSharesResponse.isNotEmpty()) {
                                         Log.d("DATA FETCHING", "Data fetched successfully")
 
                                         val currency = incomeStatementResponse[0].reportedCurrency
