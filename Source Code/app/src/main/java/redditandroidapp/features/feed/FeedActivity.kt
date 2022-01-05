@@ -108,18 +108,26 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
         val defaultCompanies = arrayListOf<String>()
 
         defaultCompanies.add("AAPL")
+        defaultCompanies.add("ABBV")
         defaultCompanies.add("ALPP")
         defaultCompanies.add("AZN")
+        defaultCompanies.add("BABA")
         defaultCompanies.add("BP")
         defaultCompanies.add("FB")
         defaultCompanies.add("FDX")
         defaultCompanies.add("GOOGL")
+        defaultCompanies.add("IBM")
         defaultCompanies.add("HMC")
+        defaultCompanies.add("MSFT")
+        defaultCompanies.add("NFLX")
         defaultCompanies.add("NIO")
+        defaultCompanies.add("NVDA")
         defaultCompanies.add("PLUG")
+        defaultCompanies.add("PYPL")
         defaultCompanies.add("SQ")
         defaultCompanies.add("TM")
         defaultCompanies.add("TSLA")
+        defaultCompanies.add("VZ")
         defaultCompanies.add("XPEV")
 
         defaultCompanies.forEach {
@@ -181,7 +189,6 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
     }
 
     override fun fetchingError() {
-
         runOnUiThread {
             val builder = AlertDialog.Builder(this)
             builder.setTitle(R.string.dialogTitle)

@@ -20,7 +20,7 @@ class CompaniesListAdapter(val context: Context) : RecyclerView.Adapter<ViewHold
 
     fun setItems(newCompaniesList: List<CompanyDatabaseEntity>) {
         this.companiesList = newCompaniesList.sortedByDescending {
-            it.getNetIncomeInRecentQuarterInCentPer1DollarSpentOnThemToday()
+            it.getEarningsPerSharePer1DollarSpentOnThemToday()
         }
         notifyDataSetChanged()
     }
