@@ -66,6 +66,7 @@ class CompaniesRepository @Inject constructor(private val networkInteractor: Com
                                         Log.d("DATA FETCHING", "Data fetched successfully")
 
                                         val currency = incomeStatementResponse[0].reportedCurrency
+                                        val fillingDate = incomeStatementResponse[0].fillingDate
                                         val previousQuarter_GrossProfit = CurrencyExchange.applyCurrencyExchange(currency ,incomeStatementResponse[1].grossProfit)
                                         val previousQuarter_NetIncome = CurrencyExchange.applyCurrencyExchange(currency ,incomeStatementResponse[1].netIncome)
                                         val recentQuarter_GrossProfit = CurrencyExchange.applyCurrencyExchange(currency ,incomeStatementResponse[0].grossProfit)
@@ -76,6 +77,7 @@ class CompaniesRepository @Inject constructor(private val networkInteractor: Com
                                         val today_SharePrice = sharePriceResponse[0].sharePrice
 
                                         Log.d("DATA CONTROL", "ticker: " + formattedTicker)
+                                        Log.d("DATA CONTROL", "fillingDate: " + fillingDate)
                                         Log.d("DATA CONTROL", "previousQuarter_GrossProfit: " + previousQuarter_GrossProfit.toString())
                                         Log.d("DATA CONTROL", "previousQuarter_NetIncome: " + previousQuarter_NetIncome.toString())
                                         Log.d("DATA CONTROL", "recentQuarter_GrossProfit: " + recentQuarter_GrossProfit.toString())
@@ -85,6 +87,7 @@ class CompaniesRepository @Inject constructor(private val networkInteractor: Com
 
                                         val newCompany = CompanyDatabaseEntity(
                                                 ticker = ticker,
+                                                incomeStatementDate = fillingDate,
 
                                                 previousQuarter_GrossProfit = previousQuarter_GrossProfit,
                                                 previousQuarter_NetIncome = previousQuarter_NetIncome,

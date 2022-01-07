@@ -116,4 +116,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView_eps"/>
 
+    <TextView
+        android:id="@+id/textView_incomeStatementDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/list_item_text_size_main"
+        android:layout_marginTop="@dimen/list_item_internal_spacing"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_epsPerSpentDollar"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

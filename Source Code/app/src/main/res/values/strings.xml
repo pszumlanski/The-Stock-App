@@ -18,4 +18,6 @@
     <string name="eps">Earnings per share:</string>
     <string name="eps_per_dollar">Earnings per share per 1 dollar spent on them today:</string>
 
+    <string name="income_state_date">Income state date:</string>
+
 </resources>

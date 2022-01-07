@@ -3,6 +3,7 @@ package redditandroidapp.data.database
 import android.util.Log
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(tableName = "companies")
 data class CompanyDatabaseEntity(
@@ -16,7 +17,10 @@ data class CompanyDatabaseEntity(
         val eps: Double?,
 
         val today_OutstandingShares: Long?,
-        val today_SharePrice: Double?
+        val today_SharePrice: Double?,
+
+        // Todo: change into Date
+        val incomeStatementDate: String?
 ) {
 
     fun getGrossProfitChangeWithPreviousQuarter(): Double? {
