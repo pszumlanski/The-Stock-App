@@ -83,11 +83,11 @@ class CompaniesListAdapter(val context: Context) : RecyclerView.Adapter<ViewHold
         }
 
         company.getEarningsPerShare()?.let {
-            holder.eps.text = (context.getString(R.string.eps) + "     " + String.format("%.2f", it))
+            holder.eps.text = (context.getString(R.string.eps) + "     " + String.format("%.4f", it))
         }
 
         company.getEarningsPerSharePer1DollarSpentOnThemToday()?.let {
-            holder.epsPer1DollarSpent.text = (context.getString(R.string.eps_per_dollar) + "     " + String.format("%.2f", it))
+            holder.epsPer1DollarSpent.text = (context.getString(R.string.eps_per_dollar) + "     " + String.format("%.4f", it))
         }
 
         company.incomeStatementDate?.let {
