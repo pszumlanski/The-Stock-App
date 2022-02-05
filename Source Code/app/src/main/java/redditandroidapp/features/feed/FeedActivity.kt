@@ -118,6 +118,7 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
         defaultCompanies.add("GOOGL")
         defaultCompanies.add("IBM")
         defaultCompanies.add("HMC")
+        defaultCompanies.add("MRNA")
         defaultCompanies.add("MSFT")
         defaultCompanies.add("NFLX")
         defaultCompanies.add("NIO")
