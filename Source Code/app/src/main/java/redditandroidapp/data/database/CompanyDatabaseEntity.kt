@@ -3,7 +3,6 @@ package redditandroidapp.data.database
 import android.util.Log
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.*
 
 @Entity(tableName = "companies")
 data class CompanyDatabaseEntity(
