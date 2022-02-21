@@ -6,6 +6,9 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +19,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.appbar.*
 import kotlinx.android.synthetic.main.loading_badge.*
 import redditandroidapp.R
 import redditandroidapp.data.database.CompanyDatabaseEntity
@@ -53,6 +55,8 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
         // Initialize RecyclerView (feed items)
         setupRecyclerView()
 
+        setupSortingOptions()
+
         // Fetch feed items from the back-end and load them into the view
         subscribeForFeedItems()
 
@@ -71,6 +75,21 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
             val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(add_company_input.getWindowToken(), 0)
         }
+    }
+
+    private fun setupSortingOptions() {
+        val optionsList = SortingOption.values().map { it.toString() }
+        val adapter: ArrayAdapter<String> = ArrayAdapter(this, android.R.layout.simple_spinner_item, optionsList)
+        sorting_spinner.adapter = adapter
+        sorting_spinner.onItemSelectedListener = (object : OnItemSelectedListener {
+            override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View, position: Int, id: Long) {
+                // Todo: Refactor into using arguments, not seletedItem
+                val sortingOption = SortingOption.valueOf(sorting_spinner.selectedItem as String)
+                companiesListAdapter.sortItems(sortingOption)
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>?) {}
+        })
     }
 
     private fun setupRecyclerView() {
@@ -100,7 +119,8 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
             setViewState(STATE_CONTENT_LOADED)
 
             // Display fetched items
-            companiesListAdapter.setItems(it)
+            val sortingOption = SortingOption.valueOf(sorting_spinner.selectedItem as String)
+            companiesListAdapter.setItems(it, sortingOption)
         })
     }
 
@@ -113,10 +133,13 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
         defaultCompanies.add("AZN")
         defaultCompanies.add("BABA")
         defaultCompanies.add("BP")
+        defaultCompanies.add("CXW")
         defaultCompanies.add("FB")
         defaultCompanies.add("FDX")
+        defaultCompanies.add("GD")
         defaultCompanies.add("GOOGL")
         defaultCompanies.add("IBM")
+        defaultCompanies.add("IMPX")
         defaultCompanies.add("HMC")
         defaultCompanies.add("MRNA")
         defaultCompanies.add("MSFT")
@@ -124,6 +147,7 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
         defaultCompanies.add("NIO")
         defaultCompanies.add("NVDA")
         defaultCompanies.add("PLUG")
+        defaultCompanies.add("PRU")
         defaultCompanies.add("PYPL")
         defaultCompanies.add("SQ")
         defaultCompanies.add("TM")
@@ -182,11 +206,6 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
         // Hide the loading view
         loading_container.visibility = View.GONE
         appbar_container.visibility = View.VISIBLE
-
-        // Setup refresh button
-        btn_refresh.setOnClickListener{
-            refreshPostsSubscription()
-        }
     }
 
     override fun fetchingError() {

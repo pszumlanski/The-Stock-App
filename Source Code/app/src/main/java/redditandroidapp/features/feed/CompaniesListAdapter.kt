@@ -18,10 +18,26 @@ class CompaniesListAdapter(val context: Context) : RecyclerView.Adapter<ViewHold
 
     private var companiesList: List<CompanyDatabaseEntity> = ArrayList()
 
-    fun setItems(newCompaniesList: List<CompanyDatabaseEntity>) {
-        this.companiesList = newCompaniesList.sortedByDescending {
-            it.getEarningsPerSharePer1DollarSpentOnThemToday()
+    // Todo: Refactor sortItems and setItems
+
+    fun sortItems(sortingOption: SortingOption) {
+        setItems(companiesList, sortingOption)
+    }
+
+    fun setItems(newCompaniesList: List<CompanyDatabaseEntity>, sortingOption: SortingOption) {
+
+        when (sortingOption) {
+            SortingOption.GROSS_PROFIT_CHANGE -> {
+                this.companiesList = newCompaniesList.sortedByDescending { it.getGrossProfitChangeWithPreviousQuarter() }
+            }
+            SortingOption.NET_PROFIT_CHANGE -> {
+                this.companiesList = newCompaniesList.sortedByDescending { it.getNetIncomeChangeWithPreviousQuarter() }
+            }
+            SortingOption.EPS_PER_1_DOLLAR_SPENT -> {
+                this.companiesList = newCompaniesList.sortedByDescending { it.getEarningsPerSharePer1DollarSpentOnThemToday() }
+            }
         }
+
         notifyDataSetChanged()
     }
 
@@ -118,4 +134,10 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val incomeStatementDate = view.textView_incomeStatementDate
 
     val rowContainer = view.row_container
+}
+
+enum class SortingOption {
+    GROSS_PROFIT_CHANGE,
+    NET_PROFIT_CHANGE,
+    EPS_PER_1_DOLLAR_SPENT
 }
