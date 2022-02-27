@@ -17,7 +17,7 @@ class CompaniesNetworkInteractor @Inject constructor(var apiClient: ApiClient) {
     fun getIncomeStatementData(ticker: String): Call<List<QuarterIncomeStatementGsonModel>> {
         return apiClient.getIncomeStatementData(
                 ticker,
-                PERIOD_ANNUAL,
+                PERIOD_QUARTER,
                 2,
                 apiKey = NetworkConstants.API_KEY
         )
