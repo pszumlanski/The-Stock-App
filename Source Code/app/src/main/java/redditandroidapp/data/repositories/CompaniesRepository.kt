@@ -102,12 +102,14 @@ class CompaniesRepository @Inject constructor(private val networkInteractor: Com
                                         )
                                         databaseInteractor.addNewCompany(newCompany)
                                     } else {
-                                        callback.fetchingError()
+                                        val message = "incomeStatementResponse size less than 2 or floatSharesResponse is empty"
+                                        callback.fetchingError(ticker, message)
                                         setUpdateError(null)
                                         Log.e("DATA FETCHING", "Data fetching error - data incomplete")
                                     }
                                 } else {
-                                    callback.fetchingError()
+                                    val message = "lack of incomeStatementResponse or floatSharesResponse or sharePriceResponse"
+                                    callback.fetchingError(ticker, message)
                                     setUpdateError(null)
                                     Log.e("DATA FETCHING", "Data fetching error - data incomplete")
                                 }
@@ -115,7 +117,7 @@ class CompaniesRepository @Inject constructor(private val networkInteractor: Com
                             }
 
                             override fun onFailure(call: Call<List<SharePriceGsonModel>>?, t: Throwable?) {
-                                callback.fetchingError()
+                                callback.fetchingError(ticker, t?.message)
                                 setUpdateError(t)
                                 Log.e("DATA FETCHING", "Data fetching error - call 3")
                                 t?.message?.let {
@@ -128,7 +130,7 @@ class CompaniesRepository @Inject constructor(private val networkInteractor: Com
                     }
 
                     override fun onFailure(call: Call<List<SharesFloatGsonModel>>?, t: Throwable?) {
-                        callback.fetchingError()
+                        callback.fetchingError(ticker, t?.message)
                         setUpdateError(t)
                         Log.e("DATA FETCHING", "Data fetching error - call 2")
                         t?.message?.let {
@@ -141,7 +143,7 @@ class CompaniesRepository @Inject constructor(private val networkInteractor: Com
             }
 
             override fun onFailure(call: Call<List<QuarterIncomeStatementGsonModel>>?, t: Throwable?) {
-                callback.fetchingError()
+                callback.fetchingError(ticker, t?.message)
                 setUpdateError(t)
                 Log.e("DATA FETCHING", "Data fetching error - call 1")
                 t?.message?.let {

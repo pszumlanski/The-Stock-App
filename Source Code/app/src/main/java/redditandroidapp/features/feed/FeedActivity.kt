@@ -127,6 +127,9 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
     private fun loadDefaultCompaniesSet() {
         val defaultCompanies = arrayListOf<String>()
 
+        // Error: incomeStatementResponse size less than 2 or floatSharesResponse is empty
+        //defaultCompanies.add("IMPX")
+
         defaultCompanies.add("AAPL")
         defaultCompanies.add("ABBV")
         defaultCompanies.add("ALPP")
@@ -136,10 +139,10 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
         defaultCompanies.add("CXW")
         defaultCompanies.add("FB")
         defaultCompanies.add("FDX")
+        defaultCompanies.add("FNF")
         defaultCompanies.add("GD")
         defaultCompanies.add("GOOGL")
         defaultCompanies.add("IBM")
-        defaultCompanies.add("IMPX")
         defaultCompanies.add("HMC")
         defaultCompanies.add("MRNA")
         defaultCompanies.add("MSFT")
@@ -208,12 +211,13 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
         appbar_container.visibility = View.VISIBLE
     }
 
-    override fun fetchingError() {
+    override fun fetchingError(ticker: String, errorMessage: String?) {
         runOnUiThread {
             val builder = AlertDialog.Builder(this)
-            builder.setTitle(R.string.dialogTitle)
-            builder.setMessage(R.string.dialogMessage)
-            builder.setIcon(R.drawable.ic_cross)
+            val title = getString(R.string.dialogTitle, ticker)
+            builder.setTitle(title)
+            val message = errorMessage ?: getString(R.string.dialogMessage)
+            builder.setMessage(message)
             val alertDialog: AlertDialog = builder.create()
             alertDialog.setCancelable(true)
             alertDialog.show()

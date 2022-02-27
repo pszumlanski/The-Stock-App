@@ -9,12 +9,15 @@ import javax.inject.Inject
 // Interactor used for communication with the external API
 class CompaniesNetworkInteractor @Inject constructor(var apiClient: ApiClient) {
 
+    private val PERIOD_QUARTER = "quarter";
+    private val PERIOD_ANNUAL = "annual";
+
     private val updateError: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getIncomeStatementData(ticker: String): Call<List<QuarterIncomeStatementGsonModel>> {
         return apiClient.getIncomeStatementData(
                 ticker,
-                "quarter",
+                PERIOD_ANNUAL,
                 2,
                 apiKey = NetworkConstants.API_KEY
         )

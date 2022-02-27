@@ -8,7 +8,7 @@
     <string name="refresh">Refresh</string>
     <string name="change_order">Change order</string>
     <string name="close">Close</string>
-    <string name="dialogTitle">Error</string>
+    <string name="dialogTitle">Error: %s</string>
     <string name="dialogMessage">Couldn\'t load the data</string>
 
     <string name="gross_profit_change_with_previous">Gross Profit change with previous quarter:</string>

@@ -8,6 +8,7 @@ import retrofit2.http.Query
 // External gate for communication with API endpoints (operated by Retrofit)
 interface ApiClient {
 
+    // Native currency
     @GET("/api/v3/income-statement/{ticker}")
     fun getIncomeStatementData(
             @Path(value = "ticker") ticker: String,
@@ -22,6 +23,7 @@ interface ApiClient {
             @Query("apikey") apiKey: String
     ): Call<List<SharesFloatGsonModel>>
 
+    // Always USD
     @GET("/api/v3/quote-short/{ticker}")
     fun getSharePriceData(
             @Path(value = "ticker") ticker: String,
