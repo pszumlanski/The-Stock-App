@@ -20,4 +20,7 @@
 
     <string name="income_state_date">Income state date:</string>
 
+    <string name="average_eps_per_dollar">Average EPS per dollar: %s</string>
+    <string name="average_positive_eps_per_dollar">Average positive EPS per dollar: %s</string>
+
 </resources>

@@ -30,8 +30,14 @@ class CompaniesListAdapter(val context: Context) : RecyclerView.Adapter<ViewHold
             SortingOption.GROSS_PROFIT_CHANGE -> {
                 this.companiesList = newCompaniesList.sortedByDescending { it.getGrossProfitChangeWithPreviousQuarter() }
             }
-            SortingOption.NET_PROFIT_CHANGE -> {
+            SortingOption.NET_INCOME_CHANGE -> {
                 this.companiesList = newCompaniesList.sortedByDescending { it.getNetIncomeChangeWithPreviousQuarter() }
+            }
+            SortingOption.GROSS_PROFIT_LAST_PERIOD -> {
+                this.companiesList = newCompaniesList.sortedByDescending { it.getGrossProfitInRecentQuarterInCentPer1DollarSpentOnThemToday() }
+            }
+            SortingOption.NET_INCOME_LAST_PERIOD -> {
+                this.companiesList = newCompaniesList.sortedByDescending { it.getNetIncomeInRecentQuarterInCentPer1DollarSpentOnThemToday() }
             }
             SortingOption.EPS_PER_1_DOLLAR_SPENT -> {
                 this.companiesList = newCompaniesList.sortedByDescending { it.getEarningsPerSharePer1DollarSpentOnThemToday() }
@@ -138,6 +144,8 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
 enum class SortingOption {
     GROSS_PROFIT_CHANGE,
-    NET_PROFIT_CHANGE,
+    NET_INCOME_CHANGE,
+    GROSS_PROFIT_LAST_PERIOD,
+    NET_INCOME_LAST_PERIOD,
     EPS_PER_1_DOLLAR_SPENT
 }

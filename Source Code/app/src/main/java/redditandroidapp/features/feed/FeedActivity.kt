@@ -92,6 +92,24 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
         })
     }
 
+    private fun updateAverageValues(values: List<CompanyDatabaseEntity>) {
+        val allValuesAmount = values.size
+        var sumEpsPerDollar = 0.0
+        values.forEach { it.getEarningsPerSharePer1DollarSpentOnThemToday()?.let { sumEpsPerDollar += it } }
+        val averageEpsPerDollar = sumEpsPerDollar / allValuesAmount
+        average.text = getString(R.string.average_eps_per_dollar, String.format("%.4f", averageEpsPerDollar))
+
+        val positiveValues = values.filter {
+            val epsPer1Dollar = it.getEarningsPerSharePer1DollarSpentOnThemToday()
+            epsPer1Dollar != null && epsPer1Dollar > 0.0
+        }
+        val positibeValuesAmount = positiveValues.size
+        var sumEpsPerDollar_positive = 0.0
+        positiveValues.forEach { it.getEarningsPerSharePer1DollarSpentOnThemToday()?.let { sumEpsPerDollar_positive += it } }
+        val averageEpsPerDollar_positive = sumEpsPerDollar_positive / positibeValuesAmount
+        average_positive.text = getString(R.string.average_positive_eps_per_dollar, String.format("%.4f", averageEpsPerDollar_positive))
+    }
+
     private fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(this)
         main_feed_recyclerview.layoutManager = layoutManager
@@ -121,6 +139,9 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
             // Display fetched items
             val sortingOption = SortingOption.valueOf(sorting_spinner.selectedItem as String)
             companiesListAdapter.setItems(it, sortingOption)
+
+            // Todo: Change into all options
+            updateAverageValues(it)
         })
     }
 
@@ -133,9 +154,11 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
         defaultCompanies.add("AAPL")
         defaultCompanies.add("ABBV")
         defaultCompanies.add("ALPP")
+        defaultCompanies.add("AMZN")
         defaultCompanies.add("AZN")
         defaultCompanies.add("BABA")
         defaultCompanies.add("BP")
+        defaultCompanies.add("COIN")
         defaultCompanies.add("CXW")
         defaultCompanies.add("FB")
         defaultCompanies.add("FDX")
@@ -149,9 +172,12 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
         defaultCompanies.add("NFLX")
         defaultCompanies.add("NIO")
         defaultCompanies.add("NVDA")
+        defaultCompanies.add("PLTR")
         defaultCompanies.add("PLUG")
         defaultCompanies.add("PRU")
+        defaultCompanies.add("PTON")
         defaultCompanies.add("PYPL")
+        defaultCompanies.add("RIVN")
         defaultCompanies.add("SQ")
         defaultCompanies.add("TM")
         defaultCompanies.add("TSLA")
