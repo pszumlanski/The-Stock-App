@@ -66,9 +66,6 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
 
         // Catch and handle potential update (e.g. network) issues
         subscribeForUpdateError()
-
-        // Load the default companies set
-        loadDefaultCompaniesSet()
     }
 
     private fun setupSortingOptions() {
@@ -135,7 +132,6 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
                 SortingOption.GROSS_PROFIT_LAST_PERIOD -> it.getGrossProfitInRecentQuarterInCentPer1DollarSpentOnThemToday()
                 SortingOption.NET_INCOME_LAST_PERIOD -> it.getNetIncomeInRecentQuarterInCentPer1DollarSpentOnThemToday()
                 SortingOption.EPS_PER_1_DOLLAR_SPENT -> it.getEarningsPerSharePer1DollarSpentOnThemToday()
-                else -> null
             }
             value != null && value > 0.0
         }
@@ -150,7 +146,6 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
                 SortingOption.GROSS_PROFIT_LAST_PERIOD -> it.getGrossProfitInRecentQuarterInCentPer1DollarSpentOnThemToday()
                 SortingOption.NET_INCOME_LAST_PERIOD -> it.getNetIncomeInRecentQuarterInCentPer1DollarSpentOnThemToday()
                 SortingOption.EPS_PER_1_DOLLAR_SPENT -> it.getEarningsPerSharePer1DollarSpentOnThemToday()
-                else -> null
             }
             value?.let {
                 valuesAmount++
@@ -185,6 +180,9 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
     private fun subscribeForFeedItems() {
         viewModel.subscribeForPosts()?.observe(this, Observer<List<CompanyDatabaseEntity>> {
             setViewState(STATE_CONTENT_LOADED)
+
+            // If there are no items in the DB, then upload the default set.
+            if (it.isEmpty()) loadDefaultCompaniesSet()
 
             // Display fetched items
             val sortingOption = SortingOption.valueOf(sorting_spinner.selectedItem as String)

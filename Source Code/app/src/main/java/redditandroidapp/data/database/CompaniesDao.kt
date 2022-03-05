@@ -13,7 +13,10 @@ interface CompaniesDao {
     fun insertNewCompany(companyDatabaseEntity: CompanyDatabaseEntity)
 
     @Query("SELECT * FROM companies")
-    fun getAllSavedCompanies(): LiveData<List<CompanyDatabaseEntity>>?
+    fun getAllSavedCompanies_liveData(): LiveData<List<CompanyDatabaseEntity>>?
+
+    @Query("SELECT * FROM companies")
+    fun getAllSavedCompanies(): List<CompanyDatabaseEntity>?
 
     @Query("DELETE FROM companies WHERE ticker = :ticker")
     fun removeCompany(ticker: String)

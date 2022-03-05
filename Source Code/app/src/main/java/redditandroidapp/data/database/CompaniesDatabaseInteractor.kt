@@ -8,7 +8,11 @@ import kotlinx.coroutines.launch
 // Interactor used for communication with the internal database
 class CompaniesDatabaseInteractor(private val companiesDatabase: CompaniesDatabase) {
 
-    fun getAllCompanies(): LiveData<List<CompanyDatabaseEntity>>? {
+    fun getAllCompanies_liveData(): LiveData<List<CompanyDatabaseEntity>>? {
+        return companiesDatabase.getCompaniesDao().getAllSavedCompanies_liveData()
+    }
+
+    fun getAllCompanies(): List<CompanyDatabaseEntity>? {
         return companiesDatabase.getCompaniesDao().getAllSavedCompanies()
     }
 
