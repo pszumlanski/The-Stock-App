@@ -1,7 +1,5 @@
 package redditandroidapp.data.utils
 
-import android.util.Log
-
 class CurrencyExchange {
 
     companion object {

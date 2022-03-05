@@ -6,8 +6,8 @@
     android:background="@color/colorBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="5dp"
-    android:paddingEnd="5dp"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp"
     android:animateLayoutChanges="true"
     android:nestedScrollingEnabled="true"
     android:id="@+id/main_container">
@@ -31,9 +31,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/btn_background_badge"
         android:textColor="@color/colorTextAlternative"
-
-        android:text="ADD"
-
+        android:text="ADD COMPANY BY TICKER"
         app:layout_constraintTop_toBottomOf="@id/add_company_input"/>
 
     <Spinner
@@ -41,18 +39,25 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
+        tools:listitem="@layout/support_simple_spinner_dropdown_item"
         app:layout_constraintTop_toBottomOf="@id/add_company_button"/>
 
     <TextView
         android:id="@+id/average"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="@dimen/average_label_padding_horizontal"
+        android:paddingEnd="@dimen/average_label_padding_horizontal"
+        tools:text="Average"
         app:layout_constraintTop_toBottomOf="@id/sorting_spinner"/>
 
     <TextView
         android:id="@+id/average_positive"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="@dimen/average_label_padding_horizontal"
+        android:paddingEnd="@dimen/average_label_padding_horizontal"
+        tools:text="Average"
         app:layout_constraintTop_toBottomOf="@id/average"/>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -60,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:scrollbars="vertical"
+        android:scrollbars="none"
         android:layout_marginTop="10dp"
         android:paddingTop="@dimen/feed_view_padding_vertical"
         android:paddingBottom="@dimen/feed_view_padding_vertical"

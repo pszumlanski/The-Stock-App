@@ -6,20 +6,22 @@
     <dimen name="background_badge_corner_radius">2dp</dimen>
 
     <dimen name="appbar_padding_vertical">16dp</dimen>
-    <dimen name="appbar_text_size">16sp</dimen>
+    <dimen name="appbar_text_size">18sp</dimen>
     <dimen name="appbar_margin_end">12dp</dimen>
     <dimen name="appbar_button_length">40dp</dimen>
     <dimen name="appbar_button_padding">4dp</dimen>
     <dimen name="appbar_button_margin_horizontal">20dp</dimen>
 
     <dimen name="list_item_padding">20dp</dimen>
-    <dimen name="list_item_margin_horizontal">20dp</dimen>
+    <dimen name="list_item_margin_horizontal">4dp</dimen>
     <dimen name="list_item_margin_vertical">10dp</dimen>
     <dimen name="list_item_internal_spacing">20dp</dimen>
     <dimen name="list_item_elevation">2dp</dimen>
     <dimen name="list_item_thumbnail_length">100dp</dimen>
     <dimen name="list_item_text_size_big">16sp</dimen>
     <dimen name="list_item_text_size_main">13sp</dimen>
+
+    <dimen name="average_label_padding_horizontal">9dp</dimen>
 
     <dimen name="feed_view_padding_vertical">15dp</dimen>
 

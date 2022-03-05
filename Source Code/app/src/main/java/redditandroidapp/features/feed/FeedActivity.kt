@@ -55,7 +55,11 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
         // Initialize RecyclerView (feed items)
         setupRecyclerView()
 
+        // Initialize sorting spinner
         setupSortingOptions()
+
+        // Initialize adding company button
+        setupAddCompanyButton()
 
         // Fetch feed items from the back-end and load them into the view
         subscribeForFeedItems()
@@ -65,16 +69,6 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
 
         // Load the default companies set
         loadDefaultCompaniesSet()
-
-        // TODO CLEAN
-        add_company_button.setOnClickListener {
-            val ticker = add_company_input.text.toString()
-            viewModel.addCompany(ticker, activity)
-
-            // Hide the keyboard
-            val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(add_company_input.getWindowToken(), 0)
-        }
     }
 
     private fun setupSortingOptions() {
@@ -86,28 +80,84 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
                 // Todo: Refactor into using arguments, not seletedItem
                 val sortingOption = SortingOption.valueOf(sorting_spinner.selectedItem as String)
                 companiesListAdapter.sortItems(sortingOption)
+
+                // Todo: Not good solution when we fetch data back from the adapter - refactor in the future.
+                updateAverageValues(companiesListAdapter.getCurrentlyDisplayedItems(), sortingOption)
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {}
         })
     }
 
-    private fun updateAverageValues(values: List<CompanyDatabaseEntity>) {
-        val allValuesAmount = values.size
-        var sumEpsPerDollar = 0.0
-        values.forEach { it.getEarningsPerSharePer1DollarSpentOnThemToday()?.let { sumEpsPerDollar += it } }
-        val averageEpsPerDollar = sumEpsPerDollar / allValuesAmount
-        average.text = getString(R.string.average_eps_per_dollar, String.format("%.4f", averageEpsPerDollar))
-
-        val positiveValues = values.filter {
-            val epsPer1Dollar = it.getEarningsPerSharePer1DollarSpentOnThemToday()
-            epsPer1Dollar != null && epsPer1Dollar > 0.0
+    private fun setupAddCompanyButton() {
+        add_company_button.setOnClickListener {
+            val ticker = add_company_input.text.toString()
+            viewModel.addCompany(ticker, activity)
+            hideKeyboard()
         }
-        val positibeValuesAmount = positiveValues.size
-        var sumEpsPerDollar_positive = 0.0
-        positiveValues.forEach { it.getEarningsPerSharePer1DollarSpentOnThemToday()?.let { sumEpsPerDollar_positive += it } }
-        val averageEpsPerDollar_positive = sumEpsPerDollar_positive / positibeValuesAmount
-        average_positive.text = getString(R.string.average_positive_eps_per_dollar, String.format("%.4f", averageEpsPerDollar_positive))
+    }
+
+    private fun hideKeyboard() {
+        val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(add_company_input.getWindowToken(), 0)
+    }
+
+    private fun updateAverageValues(values: List<CompanyDatabaseEntity>, sortingOption: SortingOption) {
+        when (sortingOption) {
+            SortingOption.GROSS_PROFIT_LAST_PERIOD -> {
+                val averageGrossProfitPerDollar = calculateAverageValue(values, SortingOption.GROSS_PROFIT_LAST_PERIOD)
+                average.text = getString(R.string.average_gross_profit_per_dollar, String.format("%.4f", averageGrossProfitPerDollar))
+
+                val averageGrossProfitPerDollar_positive = calculateAverageValue_positiveOnly(values, SortingOption.GROSS_PROFIT_LAST_PERIOD)
+                average_positive.text = getString(R.string.average_positive_gross_profit_per_dollar, String.format("%.4f", averageGrossProfitPerDollar_positive))
+            }
+            SortingOption.NET_INCOME_LAST_PERIOD -> {
+                val averageNetIncomePerDollar = calculateAverageValue(values, SortingOption.NET_INCOME_LAST_PERIOD)
+                average.text = getString(R.string.average_net_income_per_dollar, String.format("%.4f", averageNetIncomePerDollar))
+
+                val averageNetIncomePerDollar_positive = calculateAverageValue_positiveOnly(values, SortingOption.NET_INCOME_LAST_PERIOD)
+                average_positive.text = getString(R.string.average_positive_net_income_per_dollar, String.format("%.4f", averageNetIncomePerDollar_positive))
+            }
+            SortingOption.EPS_PER_1_DOLLAR_SPENT -> {
+                val averageEpsPerDollar = calculateAverageValue(values, SortingOption.EPS_PER_1_DOLLAR_SPENT)
+                average.text = getString(R.string.average_eps_per_dollar, String.format("%.4f", averageEpsPerDollar))
+
+                val averageEpsPerDollar_positive = calculateAverageValue_positiveOnly(values, SortingOption.EPS_PER_1_DOLLAR_SPENT)
+                average_positive.text = getString(R.string.average_positive_eps_per_dollar, String.format("%.4f", averageEpsPerDollar_positive))
+            }
+            else -> {}
+        }
+    }
+
+    private fun calculateAverageValue_positiveOnly(companies: List<CompanyDatabaseEntity>, sortingOption: SortingOption): Float {
+        val positiveValues = companies.filter {
+            val value = when (sortingOption) {
+                SortingOption.GROSS_PROFIT_LAST_PERIOD -> it.getGrossProfitInRecentQuarterInCentPer1DollarSpentOnThemToday()
+                SortingOption.NET_INCOME_LAST_PERIOD -> it.getNetIncomeInRecentQuarterInCentPer1DollarSpentOnThemToday()
+                SortingOption.EPS_PER_1_DOLLAR_SPENT -> it.getEarningsPerSharePer1DollarSpentOnThemToday()
+                else -> null
+            }
+            value != null && value > 0.0
+        }
+        return calculateAverageValue(positiveValues, sortingOption)
+    }
+
+    private fun calculateAverageValue(companies: List<CompanyDatabaseEntity>, sortingOption: SortingOption): Float {
+        var valuesAmount = 0
+        var sumPerDollar = 0.0
+        companies.forEach {
+            val value = when (sortingOption) {
+                SortingOption.GROSS_PROFIT_LAST_PERIOD -> it.getGrossProfitInRecentQuarterInCentPer1DollarSpentOnThemToday()
+                SortingOption.NET_INCOME_LAST_PERIOD -> it.getNetIncomeInRecentQuarterInCentPer1DollarSpentOnThemToday()
+                SortingOption.EPS_PER_1_DOLLAR_SPENT -> it.getEarningsPerSharePer1DollarSpentOnThemToday()
+                else -> null
+            }
+            value?.let {
+                valuesAmount++
+                sumPerDollar += it
+            }
+        }
+        return (sumPerDollar / valuesAmount).toFloat()
     }
 
     private fun setupRecyclerView() {
@@ -140,8 +190,7 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
             val sortingOption = SortingOption.valueOf(sorting_spinner.selectedItem as String)
             companiesListAdapter.setItems(it, sortingOption)
 
-            // Todo: Change into all options
-            updateAverageValues(it)
+            updateAverageValues(it, sortingOption)
         })
     }
 
@@ -152,37 +201,38 @@ class FeedActivity : AppCompatActivity(), DataFetchingCallback {
         //defaultCompanies.add("IMPX")
 
         defaultCompanies.add("AAPL")
-        defaultCompanies.add("ABBV")
-        defaultCompanies.add("ALPP")
         defaultCompanies.add("AMZN")
-        defaultCompanies.add("AZN")
-        defaultCompanies.add("BABA")
-        defaultCompanies.add("BP")
-        defaultCompanies.add("COIN")
-        defaultCompanies.add("CXW")
         defaultCompanies.add("FB")
-        defaultCompanies.add("FDX")
-        defaultCompanies.add("FNF")
-        defaultCompanies.add("GD")
         defaultCompanies.add("GOOGL")
         defaultCompanies.add("IBM")
-        defaultCompanies.add("HMC")
-        defaultCompanies.add("MRNA")
         defaultCompanies.add("MSFT")
         defaultCompanies.add("NFLX")
-        defaultCompanies.add("NIO")
         defaultCompanies.add("NVDA")
-        defaultCompanies.add("PLTR")
-        defaultCompanies.add("PLUG")
-        defaultCompanies.add("PRU")
-        defaultCompanies.add("PTON")
         defaultCompanies.add("PYPL")
-        defaultCompanies.add("RIVN")
-        defaultCompanies.add("SQ")
-        defaultCompanies.add("TM")
-        defaultCompanies.add("TSLA")
         defaultCompanies.add("VZ")
-        defaultCompanies.add("XPEV")
+
+//        defaultCompanies.add("ABBV")
+//        defaultCompanies.add("ALPP")
+//        defaultCompanies.add("AZN")
+//        defaultCompanies.add("BABA")
+//        defaultCompanies.add("BP")
+//        defaultCompanies.add("COIN")
+//        defaultCompanies.add("CXW")
+//        defaultCompanies.add("FDX")
+//        defaultCompanies.add("FNF")
+//        defaultCompanies.add("GD")
+//        defaultCompanies.add("HMC")
+//        defaultCompanies.add("MRNA")
+//        defaultCompanies.add("NIO")
+//        defaultCompanies.add("PLTR")
+//        defaultCompanies.add("PLUG")
+//        defaultCompanies.add("PRU")
+//        defaultCompanies.add("PTON")
+//        defaultCompanies.add("RIVN")
+//        defaultCompanies.add("SQ")
+//        defaultCompanies.add("TM")
+//        defaultCompanies.add("TSLA")
+//        defaultCompanies.add("XPEV")
 
         defaultCompanies.forEach {
             viewModel.addCompany(it, activity)
